@@ -97,6 +97,7 @@ class ResponseTodoList(BaseModel):
 
 
 # tagsはSwaggerUIでのグルーピングに使用します。
-@app.get("/hello", tags=["Hello"])
-def get_hello():
-    return {"Message": "Hello TechTrain!"}
+@app.get("/echo", tags=["Hello"])
+def get_echo(message: str, name: str):
+
+    return {"Message": f"{message} {name}!"}
