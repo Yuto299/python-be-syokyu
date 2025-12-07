@@ -38,7 +38,7 @@ services:
       - "${APP_PORT:-18008}:${APP_PORT:-18008}"
     volumes:
       - .:/opt/python-be-syokyu-app
-    command: fastapi dev main.py --port=${APP_PORT:-18008} --host=0.0.0.0
+    command: uvicorn app.main:app --reload --host=0.0.0.0 --port=${APP_PORT:-18008}
 
   adminer:
     image: adminer
@@ -46,8 +46,8 @@ services:
     ports:
       - 38080:8080
     environment:
-        ADMINER_DEFAULT_SERVER: db
-        ADMINER_DESIGN: galkaev
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: galkaev
 
 volumes:
   python-be-syokyu-db-data:
