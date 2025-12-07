@@ -96,8 +96,14 @@ class ResponseTodoList(BaseModel):
     updated_at: datetime = Field(title="datetime that the item was updated")
 
 
-# tagsはSwaggerUIでのグルーピングに使用します。
+# GET Hello
 @app.get("/echo", tags=["Hello"])
 def get_echo(message: str, name: str):
 
     return {"Message": f"{message} {name}!"}
+
+
+# GET System
+@app.get("/health", tags=["System"])
+def get_health():
+    return {"status": "ok"}
