@@ -112,10 +112,26 @@ def get_health():
 
 
 # GET Todoリスト
-@app.get("/lists/{todo_list_id}", tags=["Todoリスト"])
+@app.get("/lists/{todo_list_id}", response_model=ResponseTodoList, tags=["Todoリスト"])
 def get_todo_list(
     todo_list_id: int,
     db: Session = Depends(get_db),
 ):
     todo_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
     return todo_list
+
+
+# POST Todoリスト
+@app.post("/lists", response_model=ResponseTodoList, tags=["Todoリスト"])
+def post_todo_list(
+    todo_list: NewTodoList,
+    db: Session = Depends(get_db),
+):
+    new_list = ListModel(
+        title=todo_list.title,
+        description=todo_list.description,
+    )
+    db.add(new_list)
+    db.commit()
+    db.refresh(new_list)
+    return new_list
