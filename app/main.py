@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -118,6 +118,9 @@ def get_todo_list(
     db: Session = Depends(get_db),
 ):
     todo_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
+    if not todo_list:
+        raise HTTPException(status_code=404, detail="Todo List not found")
+
     return todo_list
 
 
@@ -134,4 +137,25 @@ def post_todo_list(
     db.add(new_list)
     db.commit()
     db.refresh(new_list)
+
     return new_list
+
+
+# PUT Todoリスト
+@app.put("/lists/{todo_list_id}", response_model=ResponseTodoList, tags=["Todoリスト"])
+def put_todo_list(
+    todo_list_id: int,
+    todo_list: UpdateTodoList,
+    db: Session = Depends(get_db),
+):
+    existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
+    if todo_list.title is None:
+        raise HTTPException(status_code=401, detail="Title is required")
+
+    existing_list.title = todo_list.title
+    existing_list.description = todo_list.description
+
+    db.commit()
+    db.refresh(existing_list)
+
+    return existing_list
