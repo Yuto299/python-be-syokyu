@@ -159,3 +159,19 @@ def put_todo_list(
     db.refresh(existing_list)
 
     return existing_list
+
+
+# DELETE Todoリスト
+@app.delete("/lists/{todo_list_id}", tags=["Todoリスト"])
+def delete_todo_list(
+    todo_list_id: int,
+    db: Session = Depends(get_db),
+):
+    existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
+    if not existing_list:
+        raise HTTPException(status_code=404, detail="Todo List not found")
+
+    db.delete(existing_list)
+    db.commit()
+
+    return {}
