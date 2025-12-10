@@ -197,3 +197,27 @@ def get_todo_item(
         raise HTTPException(status_code=404, detail="Todo Item not found")
 
     return todo_item
+
+
+# POST Todo項目
+@app.post(
+    "/lists/{todo_list_id}/items", response_model=ResponseTodoItem, tags=["Todo項目"]
+)
+def post_todo_item(
+    todo_list_id: int,
+    todo_item: NewTodoItem,
+    db: Session = Depends(get_db),
+):
+    new_item = ItemModel(
+        todo_list_id=todo_list_id,
+        title=todo_item.title,
+        description=todo_item.description,
+        status_code=TodoItemStatusCode.NOT_COMPLETED.value,
+        due_at=todo_item.due_at,
+    )
+
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
+
+    return new_item
