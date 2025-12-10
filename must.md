@@ -1,6 +1,6 @@
 <!-- ローカルホスト -->
 
-(http://localhost:docs)
+(http://localhost:18008/docs)
 
 <!-- DB からのデータ取得方法 -->
 
