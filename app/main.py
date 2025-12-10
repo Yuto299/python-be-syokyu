@@ -149,11 +149,14 @@ def put_todo_list(
     db: Session = Depends(get_db),
 ):
     existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
+
     if todo_list.title is None:
         raise HTTPException(status_code=401, detail="Title is required")
 
+    # タイトルは必須なのでIf文は不要（同じタイトルで更新しても上書きされる）
     existing_list.title = todo_list.title
-    existing_list.description = todo_list.description
+    if todo_list.description is not None:
+        existing_list.description = todo_list.description
 
     db.commit()
     db.refresh(existing_list)
@@ -221,3 +224,42 @@ def post_todo_item(
     db.refresh(new_item)
 
     return new_item
+
+
+# PUT Todo項目
+@app.put(
+    "/lists/{todo_list_id}/items/{todo_item_id}",
+    response_model=ResponseTodoItem,
+    tags=["Todo項目"],
+)
+def put_todo_item(
+    todo_list_id: int,
+    todo_item_id: int,
+    todo_item: UpdateTodoItem,
+    db: Session = Depends(get_db),
+):
+    existing_item = (
+        db.query(ItemModel)
+        .filter(ItemModel.id == todo_item_id, ItemModel.todo_list_id == todo_list_id)
+        .first()
+    )
+    if not existing_item:
+        raise HTTPException(status_code=404, detail="Todo Item not found")
+
+    existing_item.title = todo_item.title
+
+    if todo_item.description is not None:
+        existing_item.description = todo_item.description
+    if todo_item.due_at is not None:
+        existing_item.due_at = todo_item.due_at
+    if todo_item.complete is not None:
+        existing_item.status_code = (
+            TodoItemStatusCode.COMPLETED.value
+            if todo_item.complete
+            else TodoItemStatusCode.NOT_COMPLETED.value
+        )
+
+    db.commit()
+    db.refresh(existing_item)
+
+    return existing_item
