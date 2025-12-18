@@ -5,17 +5,17 @@ from app.models.list_model import ListModel
 
 # GET Todoリスト
 def get_todo_list(
-    todo_list_id: int,
     db: Session,
+    todo_list_id: int,
 ):
     return db.query(ListModel).filter(ListModel.id == todo_list_id).first()
 
 
 # POST Todoリスト
 def post_todo_list(
+    db: Session,
     title: str,
     description: str | None,
-    db: Session,
 ):
     new_list = ListModel(
         title=title,
@@ -30,10 +30,10 @@ def post_todo_list(
 
 # PUT Todoリスト
 def put_todo_list(
+    db: Session,
     todo_list_id: int,
     title: str,
     description: str | None,
-    db: Session,
 ):
     existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
 
@@ -49,8 +49,8 @@ def put_todo_list(
 
 # DELETE Todoリスト
 def delete_todo_list(
-    todo_list_id: int,
     db: Session,
+    todo_list_id: int,
 ):
     existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
 
