@@ -20,7 +20,7 @@ def get_todo_item(
     return todo_item
 
 
-@router.post("", response_model=ResponseTodoItem, status_code=201)
+@router.post("/", response_model=ResponseTodoItem, status_code=201)
 def post_todo_item(
     todo_list_id: int,
     todo_item: NewTodoItem,

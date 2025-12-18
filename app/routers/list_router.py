@@ -19,7 +19,7 @@ def get_todo_list(
     return todo_list
 
 
-@router.post("", response_model=ResponseTodoList, status_code=201)
+@router.post("/", response_model=ResponseTodoList, status_code=201)
 def post_todo_list(
     todo_list: NewTodoList,
     db: Session = Depends(get_db),
