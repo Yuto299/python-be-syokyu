@@ -43,7 +43,7 @@ class ResponseTodoItem(BaseModel):
     updated_at: datetime = Field(title="datetime that the item was updated")
 
 
-class ItemListResponse(BaseModel):
-    """TODO項目一覧取得時のスキーマ."""
+# class ItemListResponse(BaseModel):
+#     """TODO項目一覧取得時のスキーマ."""
 
-    items: list[ResponseTodoItem] = Field(title="List of Todo Items")
+#     items: list[ResponseTodoItem] = Field(title="List of Todo Items")
