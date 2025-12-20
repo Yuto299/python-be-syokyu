@@ -112,5 +112,14 @@ def delete_todo_item(
 def get_todo_items(
     db: Session,
     todo_list_id: int,
+    page: int = 1,
+    per_page: int = 10,
 ):
-    return db.query(ItemModel).filter(ItemModel.todo_list_id == todo_list_id).all()
+    offset = (page - 1) * per_page
+    return (
+        db.query(ItemModel)
+        .filter(ItemModel.todo_list_id == todo_list_id)
+        .offset(offset)
+        .limit(per_page)
+        .all()
+    )

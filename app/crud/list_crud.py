@@ -69,5 +69,8 @@ def delete_todo_list(
 # GET Todoリスト一覧
 def get_todo_lists(
     db: Session,
+    page: int = 1,
+    per_page: int = 10,
 ):
-    return db.query(ListModel).all()
+    offset = (page - 1) * per_page
+    return db.query(ListModel).offset(offset).limit(per_page).all()

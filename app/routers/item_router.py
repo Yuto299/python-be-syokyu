@@ -75,5 +75,7 @@ def delete_todo_item(
 def get_todo_items(
     todo_list_id: int,
     db: Session = Depends(get_db),
+    page: int = 1,
+    per_page: int = 10,
 ):
-    return item_crud.get_todo_items(db, todo_list_id)
+    return item_crud.get_todo_items(db, todo_list_id, page, per_page)
