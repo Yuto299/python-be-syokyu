@@ -56,3 +56,10 @@ def delete_todo_list(
     if not existing_list:
         raise HTTPException(status_code=404, detail="Todo List not found")
     return {}
+
+
+@router.get("/", response_model=list[ResponseTodoList])
+def get_todo_lists(
+    db: Session = Depends(get_db),
+):
+    return list_crud.get_todo_lists(db)

@@ -66,3 +66,11 @@ def delete_todo_item(
     if not existing_item:
         raise HTTPException(status_code=404, detail="Todo Item not found")
     return {}
+
+
+@router.get("/", response_model=list[ResponseTodoItem])
+def get_todo_items(
+    todo_list_id: int,
+    db: Session = Depends(get_db),
+):
+    return item_crud.get_todo_items(db, todo_list_id)
