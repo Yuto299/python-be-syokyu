@@ -33,9 +33,6 @@ def put_todo_list(
     todo_list: UpdateTodoList,
     db: Session = Depends(get_db),
 ):
-    if todo_list.title is None:
-        raise HTTPException(status_code=401, detail="Title is required")
-
     existing_list = list_crud.put_todo_list(
         db,
         todo_list_id,

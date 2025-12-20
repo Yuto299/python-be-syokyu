@@ -37,6 +37,9 @@ def put_todo_list(
 ):
     existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
 
+    if not existing_list:
+        return None
+
     existing_list.title = title
     if description is not None:
         existing_list.description = description
@@ -53,6 +56,9 @@ def delete_todo_list(
     todo_list_id: int,
 ):
     existing_list = db.query(ListModel).filter(ListModel.id == todo_list_id).first()
+
+    if not existing_list:
+        return None
 
     db.delete(existing_list)
     db.commit()
