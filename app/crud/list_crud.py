@@ -58,3 +58,10 @@ def delete_todo_list(
     db.commit()
 
     return {}
+
+
+# GET Todoリスト一覧
+def get_todo_lists(
+    db: Session,
+):
+    return db.query(ListModel).all()

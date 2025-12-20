@@ -93,3 +93,11 @@ def delete_todo_item(
     db.commit()
 
     return {}
+
+
+# GET Todo項目一覧
+def get_todo_items(
+    db: Session,
+    todo_list_id: int,
+):
+    return db.query(ItemModel).filter(ItemModel.todo_list_id == todo_list_id).all()
