@@ -27,6 +27,13 @@ def post_todo_item(
     description: str | None,
     due_at: datetime | None,
 ):
+    from app.crud import list_crud
+
+    # todo_list_idの存在チェック
+    todo_list = list_crud.get_todo_list(db, todo_list_id)
+    if not todo_list:
+        return None
+
     new_item = ItemModel(
         todo_list_id=todo_list_id,
         title=title,
@@ -58,6 +65,9 @@ def put_todo_item(
         .first()
     )
 
+    if not existing_item:
+        return None
+
     existing_item.title = title
 
     if description is not None:
@@ -88,6 +98,9 @@ def delete_todo_item(
         .filter(ItemModel.id == todo_item_id, ItemModel.todo_list_id == todo_list_id)
         .first()
     )
+
+    if not existing_item:
+        return None
 
     db.delete(existing_item)
     db.commit()

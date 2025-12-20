@@ -26,13 +26,16 @@ def post_todo_item(
     todo_item: NewTodoItem,
     db: Session = Depends(get_db),
 ):
-    return item_crud.post_todo_item(
+    new_item = item_crud.post_todo_item(
         db,
         todo_list_id,
         todo_item.title,
         todo_item.description,
         todo_item.due_at,
     )
+    if not new_item:
+        raise HTTPException(status_code=404, detail="Todo List not found")
+    return new_item
 
 
 @router.put("/{todo_item_id}", response_model=ResponseTodoItem)
