@@ -1,3 +1,4 @@
+# 「APIの入出力の形（DTO）」
 from datetime import datetime
 
 from pydantic import BaseModel, Field

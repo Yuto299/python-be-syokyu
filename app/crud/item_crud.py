@@ -1,3 +1,4 @@
+# 「データベース操作だけ」を担当
 from datetime import datetime
 
 from sqlalchemy.orm import Session
